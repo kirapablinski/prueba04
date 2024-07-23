@@ -1,33 +1,33 @@
-import { eliminarPersona, obtenerPersona } from '@/Firebase/Promesas'
-import { Persona } from '@/interface/iPersona'
+import { eliminarAdmin, eliminarPersona, obtenerAdmin, obtenerPersona } from '@/Firebase/Promesas'
+import { Admin } from '@/interface/iAdmin';
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react'
 import { Button, Modal, Table } from 'react-bootstrap'
 import { FaUserEdit } from "react-icons/fa";
 import { MdDeleteForever } from "react-icons/md";
 
-export const Pagina4 = () => {
+export const Pagina6 = () => {
     const [show,setshow] = useState(false);
     const handleClose = ()=> setshow(false); 
     const handleShow = ()=> setshow(true); 
-    const [personas,setpersonas] = useState<Persona[]>([])
+    const [admin,setadmin] = useState<Admin[]>([])
     useEffect(()=>{
         //traer listado de persona desde promesas
-        obtenerPersona().then((personas)=>{
-            setpersonas(personas)
+        obtenerAdmin().then((admins)=>{
+            setadmin(admins)
         }).catch((e)=>{
             alert("Algo ocurrio.")
         })
     },[])
-    const handleEliminar = async (p: Persona) => {
+    const handleEliminar = async (p: Admin) => {
         try {
-            await eliminarPersona(p);
-            setpersonas(personas.filter(persona => persona.key !== p.key));
+            await eliminarAdmin(p);
+            setadmin(admin.filter(admins => admins.key !== p.key));
             handleClose()
-            alert("Persona eliminada con éxito.");
+            alert("Usuario eliminado con éxito.");
         } catch (error) {
-            console.error("Error al eliminar persona:", error);
-            alert("Ocurrió un error al eliminar la persona.");
+            console.error("Error al eliminar el usuario:", error);
+            alert("Ocurrió un error al eliminar el usuario.");
         }
     };
   return (
@@ -42,36 +42,29 @@ export const Pagina4 = () => {
             <thead>
                 <tr>
                     <th>Nombre</th>
-                    <th>Apellido</th>
-                    <th>Rut</th>
-                    <th>Correo</th>
-                    <th>Fecha Nacimiento</th>
-                    <th>Edad</th>
-                    <th>Accion</th>
+                    <th>Contraseña</th>
+                    
                 </tr>
             </thead>
             <tbody>
                 {
-                    personas.map((p)=>{
+                    admin.map((p)=>{
                         return(
                             <tr>
                                 <td>{p.nombre}</td>
-                                <td>{p.apellido}</td>
-                                <td>{p.rut}</td>
-                                <td>{p.correo}</td>
-                                <td>{p.fechadenacimiento}</td>
-                                <td>{p.edad}</td>
+                                <td>{p.contrasena}</td>
+                                
                                 <td>
-                                    <Link href={{pathname:'Pagina5',query:{key:p.key}}}>
+                                    <Link href={{pathname:'Pagina7',query:{key:p.key}}}>
                                     <Button variant='warning'><FaUserEdit />Editar</Button>
                                     </Link>
                                     
                                     <Button variant='danger' onClick={handleShow} data-bs-dismiss="modal"><MdDeleteForever />Eliminar</Button>
                                     <Modal show={show} onHide={handleClose} animation={false}>
                                     <Modal.Header closeButton>
-                                    <Modal.Title>Eliminacion de Sacrificio</Modal.Title>
+                                    <Modal.Title>Eliminacion de fiel seguidor</Modal.Title>
                                     </Modal.Header>
-                                    <Modal.Body>¿Esta seguro de que quiere eliminar este sacrifico del registro?</Modal.Body>
+                                    <Modal.Body>¿Esta seguro de que quiere eliminar este fiel seguidor del registro?</Modal.Body>
                                     <Modal.Footer>
                                     <Button variant="secondary" onClick={handleClose}>
                                         Cerrar
@@ -94,4 +87,4 @@ export const Pagina4 = () => {
     </>
   )
 }
-export default Pagina4
+export default Pagina6
