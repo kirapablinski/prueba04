@@ -1,0 +1,11 @@
+[build]
+  command = "npm run build"
+  publish = "out"
+
+[context.production]
+  # Configura la caché de construcción para la rama principal
+  command = "npm run build"
+
+[caching]
+  # Lista de directorios a cachear entre builds
+  paths = ["node_modules/", ".next/cache"]
